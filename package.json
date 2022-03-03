@@ -4,6 +4,12 @@
   "description": "Define Mongoose models using TypeScript classes",
   "main": "lib/typegoose.js",
   "types": "lib/typegoose.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/esm/typegoose.js",
+      "require": "./lib/typegoose.js"
+    }
+  },
   "engines": {
     "node": ">=12.22.0"
   },
@@ -12,7 +18,7 @@
     "lib/**/*.d.ts"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.build.esm.json",
     "build:tests": "tsc -p tsconfig.json",
     "lint": "eslint -c ./.eslintrc.js './**/*.{js,ts}'",
     "test": "jest",
