@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { assertion, getName } from '../../src/internal/utils.js';
 import { getModelForClass, isDocument, isDocumentArray, isRefType, prop, Ref } from '../../src/typegoose.js';
 import { RefTestArrayTypesModel, RefTestBufferModel, RefTestModel, RefTestNumberModel, RefTestStringModel } from '../models/refTests.js';

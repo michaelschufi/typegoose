@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { logger } from '../logSettings.js';
 import { buildSchema } from '../typegoose.js';
 import type {

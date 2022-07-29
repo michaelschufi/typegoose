@@ -1,7 +1,7 @@
 /* imports */
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import 'reflect-metadata';
-import * as semver from 'semver';
+import semver from 'semver';
 import { assertion, assertionIsClass, getName, isNullOrUndefined, mergeMetadata, mergeSchemaOptions } from './internal/utils.js';
 
 /* istanbul ignore next */

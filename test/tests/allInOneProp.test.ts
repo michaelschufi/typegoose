@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { AllInOnePropModel } from '../models/allInOneProp.js';
 
 it('should work with normal prop', async () => {

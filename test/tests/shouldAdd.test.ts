@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { schemas } from '../../src/internal/data.js';
 import { assertion, isNullOrUndefined } from '../../src/internal/utils.js';
 import {

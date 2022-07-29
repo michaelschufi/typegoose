@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { mapValueToSeverity } from '../../src/globalOptions.js';
 import { DecoratorKeys, PropType, Severity } from '../../src/internal/constants.js';
 import { globalOptions } from '../../src/internal/data.js';
