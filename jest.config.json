@@ -27,5 +27,8 @@
   "maxConcurrency": 2,
   "setupFilesAfterEnv": [
     "<rootDir>/test/setupFile.ts"
-  ]
+  ],
+  "moduleNameMapper": {
+    "^(\\.{1,2}\\/.*)\\.js$": "$1"
+  }
 }
