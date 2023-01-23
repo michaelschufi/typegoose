@@ -165,28 +165,15 @@ typeguards();
 async function testDocumentType() {
   const someNewDoc = new TestClassModel();
 
-  expectType<
-    typegoose.mongoose.Document<any, BeAnObject, TestClass> &
-      TestClass &
-      IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId }
-  >(someNewDoc);
+  expectType<typegoose.mongoose.HydratedDocument<typegoose.DocumentType<TestClass>>>(someNewDoc);
 
   const someCreatedDoc = await TestClassModel.create();
 
-  expectType<
-    (typegoose.mongoose.Document<any, BeAnObject, TestClass> &
-      TestClass &
-      IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId })[]
-  >(someCreatedDoc);
+  expectType<typegoose.mongoose.HydratedDocument<typegoose.DocumentType<TestClass>>[]>(someCreatedDoc);
 
   const someFoundDoc = await TestClassModel.findOne();
 
-  expectType<
-    | (typegoose.mongoose.Document<any, BeAnObject, TestClass> &
-        TestClass &
-        IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId })
-    | null
-  >(someFoundDoc);
+  expectType<typegoose.mongoose.HydratedDocument<typegoose.DocumentType<TestClass>> | null>(someFoundDoc);
 }
 
 testDocumentType();
@@ -204,17 +191,25 @@ async function gh732() {
 
   const doc = await SomeClassModel.create({ someoptionalProp: 'helloopt', somerequiredProp: 'helloreq' });
 
-  expectType<
-    typegoose.mongoose.Document<any, BeAnObject, SomeClass> &
-      SomeClass &
-      IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId }
-  >(doc);
+  expectType<typegoose.mongoose.HydratedDocument<typegoose.DocumentType<SomeClass>>>(doc);
 
   const toobj = doc.toObject();
   const tojson = doc.toJSON();
 
-  expectType<typegoose.mongoose.Require_id<typegoose.mongoose.LeanDocument<SomeClass>>>(toobj);
-  expectType<typegoose.mongoose.FlattenMaps<typegoose.mongoose.LeanDocument<SomeClass>>>(tojson);
+  expectType<
+    typegoose.mongoose.Require_id<
+      typegoose.mongoose.Document<any, BeAnObject, SomeClass> &
+        SomeClass &
+        typegoose.types.IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId }
+    >
+  >(toobj);
+  expectType<
+    typegoose.mongoose.FlattenMaps<
+      typegoose.mongoose.Document<any, BeAnObject, SomeClass> &
+        SomeClass &
+        typegoose.types.IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId }
+    >
+  >(tojson);
 }
 
 gh732();
