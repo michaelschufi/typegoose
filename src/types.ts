@@ -27,7 +27,13 @@ export type ArraySubDocumentType<T, QueryHelpers = BeAnObject> = DocumentType<T,
 /**
  * Used Internally for ModelTypes
  */
-export type ModelType<T, QueryHelpers = BeAnObject> = mongoose.Model<DocumentType<T, QueryHelpers>, QueryHelpers>;
+export type ModelType<T, QueryHelpers = BeAnObject> = mongoose.Model<
+  T, // raw doc type
+  QueryHelpers, // query helpers
+  BeAnObject, // instance methods
+  BeAnObject, // virtuals
+  DocumentType<T, QueryHelpers> // hydrated document type
+>;
 /**
  * Any-param Constructor
  */
