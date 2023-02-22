@@ -29,7 +29,7 @@ export type ArraySubDocumentType<T, QueryHelpers = BeAnObject> = DocumentType<T,
  * Used Internally for ModelTypes
  */
 export type ModelType<T, QueryHelpers = BeAnObject> = mongoose.Model<
-  T, // raw doc type
+  T & IObjectWithTypegooseFunction, // raw doc type
   QueryHelpers, // query helpers
   BeAnObject, // instance methods
   BeAnObject // virtuals
