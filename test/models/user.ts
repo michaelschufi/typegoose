@@ -1,4 +1,4 @@
-import * as findOrCreate from 'mongoose-findorcreate';
+// import * as findOrCreate from 'mongoose-findorcreate';
 import { isNullOrUndefined } from '../../src/internal/utils';
 import { defaultClasses, DocumentType, getModelForClass, plugin, prop, Ref, ReturnModelType } from '../../src/typegoose';
 import { Car } from './car';
@@ -15,7 +15,7 @@ export enum Role {
   Guest = 'guest',
 }
 
-@plugin(findOrCreate)
+// @plugin(findOrCreate)
 export class User extends defaultClasses.FindOrCreate {
   @prop({ required: true })
   public firstName!: string;

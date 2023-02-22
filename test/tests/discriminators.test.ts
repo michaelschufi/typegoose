@@ -183,7 +183,7 @@ it('should pass all mongoose discriminator tests', async () => {
   expect(clickedEvent).toHaveProperty('url', 'google.com');
 
   // https://mongoosejs.com/docs/discriminators.html#discriminators-save-to-the-event-models-collection
-  const eventCount = await EventModel.countDocuments().exec();
+  const eventCount = await (EventModel as any).countDocuments().exec(); // see https://github.com/Automattic/mongoose/issues/13072
   expect(eventCount).toEqual(3);
 
   // https://mongoosejs.com/docs/discriminators.html#discriminator-keys
