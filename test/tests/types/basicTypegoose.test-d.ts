@@ -1,6 +1,6 @@
 import { expectType, expectAssignable, expectError } from 'tsd-lite';
 import * as typegoose from '../../../src/typegoose';
-import { isDocument, isRefType } from '../../../src/typegoose';
+import { isDocument, isRefType, prop } from '../../../src/typegoose';
 import { BeAnObject, IObjectWithTypegooseFunction } from '../../../src/types';
 
 // decorators return type
@@ -21,7 +21,10 @@ expectType<void>(typegoose.setGlobalOptions({}));
 expectType<void>(typegoose.setLogLevel('DEBUG'));
 
 // mongoose related function return types
-class TestClass {}
+class TestClass {
+  @prop()
+  public dummy?: string;
+}
 
 const TestClassModel = typegoose.getModelForClass(TestClass);
 
@@ -165,15 +168,30 @@ typeguards();
 async function testDocumentType() {
   const someNewDoc = new TestClassModel();
 
-  expectType<typegoose.mongoose.HydratedDocument<typegoose.DocumentType<TestClass>>>(someNewDoc);
+  expectType<
+    typegoose.mongoose.Document<unknown, BeAnObject, TestClass> &
+      TestClass &
+      IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId }
+  >(someNewDoc);
 
   const someCreatedDoc = await TestClassModel.create();
 
-  expectType<typegoose.mongoose.HydratedDocument<typegoose.DocumentType<TestClass>>[]>(someCreatedDoc);
+  expectType<
+    (typegoose.mongoose.Document<unknown, BeAnObject, TestClass> &
+      TestClass &
+      IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId })[]
+  >(someCreatedDoc);
 
   const someFoundDoc = await TestClassModel.findOne();
 
-  expectType<typegoose.mongoose.HydratedDocument<typegoose.DocumentType<TestClass>> | null>(someFoundDoc);
+  expectType<
+    | (typegoose.mongoose.Document<unknown, BeAnObject, TestClass> &
+        TestClass &
+        IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId })
+    | null
+  >(someFoundDoc);
+
+  expectType<typegoose.mongoose.Types.ObjectId>(someNewDoc._id);
 }
 
 testDocumentType();
@@ -191,7 +209,11 @@ async function gh732() {
 
   const doc = await SomeClassModel.create({ someoptionalProp: 'helloopt', somerequiredProp: 'helloreq' });
 
-  expectType<typegoose.mongoose.HydratedDocument<typegoose.DocumentType<SomeClass>>>(doc);
+  expectType<
+    typegoose.mongoose.Document<unknown, BeAnObject, SomeClass> &
+      SomeClass &
+      IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId }
+  >(doc);
 
   const toobj = doc.toObject();
   const tojson = doc.toJSON();
