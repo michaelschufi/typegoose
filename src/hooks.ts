@@ -46,7 +46,7 @@ interface Hooks {
     fn: ErrorHandlingMiddlewareFunction<T>,
     options: SchemaPostOptions & { errorHandler: true }
   ): ClassDecorator;
-  post<S extends object | HydratedDocument<any, any>, T = S extends Document ? S : HydratedDocument<DocumentType<S>>>(
+  post<S extends object | HydratedDocument<unknown, unknown>, T = S extends Document ? S : HydratedDocument<DocumentType<S>>>(
     method: MongooseDocumentMiddleware | MongooseDocumentMiddleware[] | RegExp,
     fn: ErrorHandlingMiddlewareFunction<T>,
     options: SchemaPostOptions & { errorHandler: true }
@@ -68,7 +68,7 @@ interface Hooks {
     fn: PostMiddlewareFunction<T, QueryResultType<T>>,
     options?: SchemaPostOptions
   ): ClassDecorator;
-  post<S extends object | HydratedDocument<any, any>, T = S extends Document ? S : HydratedDocument<DocumentType<S>>>(
+  post<S extends object | HydratedDocument<unknown, unknown>, T = S extends Document ? S : HydratedDocument<DocumentType<S>>>(
     method: MongooseDocumentMiddleware | MongooseDocumentMiddleware[] | RegExp,
     fn: PostMiddlewareFunction<T, T>,
     options?: SchemaPostOptions
@@ -90,7 +90,7 @@ interface Hooks {
     fn: ErrorHandlingMiddlewareFunction<T>,
     options?: SchemaPostOptions
   ): ClassDecorator;
-  post<S extends object | HydratedDocument<any, any>, T = S extends Document ? S : HydratedDocument<DocumentType<S>>>(
+  post<S extends object | HydratedDocument<unknown, unknown>, T = S extends Document ? S : HydratedDocument<DocumentType<S>>>(
     method: MongooseDocumentMiddleware | MongooseDocumentMiddleware[] | RegExp,
     fn: ErrorHandlingMiddlewareFunction<T>,
     options?: SchemaPostOptions
@@ -107,7 +107,7 @@ interface Hooks {
   ): ClassDecorator;
 
   // special pre hooks for each "document: true, query: false" and "document: false, query: true"
-  pre<S extends object | HydratedDocument<any, any>, T = S extends Document ? S : HydratedDocument<DocumentType<S>, any>>(
+  pre<S extends object | HydratedDocument<unknown, unknown>, T = S extends Document ? S : HydratedDocument<DocumentType<S>, unknown>>(
     method: DocumentOrQueryMiddleware | DocumentOrQueryMiddleware[],
     fn: PreMiddlewareFunction<T>,
     options: SchemaPreOptions & { document: true; query: false }
@@ -119,7 +119,7 @@ interface Hooks {
   ): ClassDecorator;
 
   // normal pre hooks
-  pre<S extends object | HydratedDocument<any, any>, T = S extends Document ? S : HydratedDocument<DocumentType<S>>>(
+  pre<S extends object | HydratedDocument<unknown, unknown>, T = S extends Document ? S : HydratedDocument<DocumentType<S>>>(
     method: 'save',
     fn: PreSaveMiddlewareFunction<T>,
     options?: SchemaPreOptions
@@ -129,7 +129,7 @@ interface Hooks {
     fn: PreMiddlewareFunction<T>,
     options?: SchemaPreOptions
   ): ClassDecorator;
-  pre<S extends object | HydratedDocument<any, any>, T = S extends Document ? S : HydratedDocument<DocumentType<S>>>(
+  pre<S extends object | HydratedDocument<unknown, unknown>, T = S extends Document ? S : HydratedDocument<DocumentType<S>>>(
     method: MongooseDocumentMiddleware | MongooseDocumentMiddleware[] | RegExp,
     fn: PreMiddlewareFunction<T>,
     options?: SchemaPreOptions

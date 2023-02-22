@@ -32,8 +32,8 @@ export type ModelType<T, QueryHelpers = BeAnObject> = mongoose.Model<
   T, // raw doc type
   QueryHelpers, // query helpers
   BeAnObject, // instance methods
-  BeAnObject, // virtuals
-  DocumentType<T, QueryHelpers> // hydrated document type
+  BeAnObject // virtuals
+  // DocumentType<T, QueryHelpers> // hydrated document type
 >;
 /**
  * Any-param Constructor
@@ -405,7 +405,7 @@ export type Ref<
   RawId extends mongoose.RefType = PopulatedType extends { _id?: mongoose.RefType }
     ? NonNullable<PopulatedType['_id']>
     : mongoose.Types.ObjectId
-> = mongoose.PopulatedDoc<DocumentType<PopulatedType>, RawId>;
+> = mongoose.PopulatedDoc<mongoose.HydratedDocument<PopulatedType>, RawId>;
 
 export interface DiscriminatorObject {
   /** The Class to use */

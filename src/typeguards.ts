@@ -7,8 +7,8 @@ import type { DocumentType, Ref, RefType } from './types';
  * Check if the given document is populated
  * @param doc The Ref with uncertain type
  */
-export function isDocument<T, S extends RefType>(doc: Ref<T, S> | null | undefined): doc is DocumentType<T> {
-  return doc instanceof mongoose.Model;
+export function isDocument<T, S extends RefType>(doc: Ref<T, S> | null | undefined): doc is mongoose.HydratedDocument<T> {
+  return doc instanceof (mongoose as any).Model; // "as any", see https://github.com/Automattic/mongoose/pull/12935#issuecomment-1439893252
 }
 
 /**
@@ -24,7 +24,9 @@ export function isDocumentArray<T, S extends RefType>(
  * Only returns "true" if all members in the array are populated
  * @param docs The Array of Refs with uncertain type
  */
-export function isDocumentArray<T, S extends RefType>(docs: Ref<T, S>[] | null | undefined): docs is DocumentType<NonNullable<T>>[];
+export function isDocumentArray<T, S extends RefType>(
+  docs: Ref<T, S>[] | null | undefined
+): docs is mongoose.HydratedDocument<NonNullable<T>>[];
 export function isDocumentArray(docs: Ref<any, any>[] | null | undefined): unknown {
   // its "any" & "unknown" because this is not listed as an overload
   return Array.isArray(docs) && docs.every((v) => isDocument(v));
@@ -91,5 +93,5 @@ export function isRefTypeArray(docs: Ref<any, any>[] | null | undefined, refType
  * @param model The Value to check
  */
 export function isModel(model: any): model is mongoose.Model<any> {
-  return model?.prototype instanceof mongoose.Model;
+  return model?.prototype instanceof (mongoose as any).Model; // "as any", see https://github.com/Automattic/mongoose/pull/12935#issuecomment-1439893252
 }

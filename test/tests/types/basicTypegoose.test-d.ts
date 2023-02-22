@@ -55,7 +55,7 @@ async function typeguards() {
   // top-level tests
   {
     if (typegoose.isDocument(someNewDoc)) {
-      expectAssignable<typegoose.DocumentType<TypeguardsClass>>(someNewDoc);
+      expectAssignable<typegoose.mongoose.HydratedDocument<TypeguardsClass>>(someNewDoc);
     } else {
       // this type is currently wrong, typescript cannot remove the case because the input is not restricted enough
       expectAssignable<unknown>(someNewDoc);
@@ -73,13 +73,13 @@ async function typeguards() {
     // isDocument
     {
       if (typegoose.isDocument(someNewDoc.refObjectId)) {
-        expectType<typegoose.DocumentType<TypeguardsClass>>(someNewDoc.refObjectId);
+        expectType<typegoose.mongoose.HydratedDocument<TypeguardsClass>>(someNewDoc.refObjectId);
       } else {
         expectType<typegoose.mongoose.Types.ObjectId | undefined>(someNewDoc.refObjectId);
       }
 
       if (typegoose.isDocument(someNewDoc.refString)) {
-        expectAssignable<typegoose.DocumentType<TypeguardsClass>>(someNewDoc.refString);
+        expectAssignable<typegoose.mongoose.HydratedDocument<TypeguardsClass>>(someNewDoc.refString);
       } else {
         expectType<string | undefined>(someNewDoc.refString);
       }
@@ -88,14 +88,14 @@ async function typeguards() {
     // isDocumentArray
     {
       if (typegoose.isDocumentArray(someNewDoc.refObjectIdArray)) {
-        expectType<typegoose.DocumentType<TypeguardsClass>[]>(someNewDoc.refObjectIdArray);
+        expectType<typegoose.mongoose.HydratedDocument<TypeguardsClass>[]>(someNewDoc.refObjectIdArray);
       } else {
         // currently has to be multiple "| undefined" because of https://github.com/typegoose/typegoose/issues/730
         expectType<typegoose.Ref<TypeguardsClass, typegoose.mongoose.Types.ObjectId>[] | undefined>(someNewDoc.refObjectIdArray);
       }
 
       if (typegoose.isDocumentArray(someNewDoc.refStringArray)) {
-        expectType<typegoose.DocumentType<TypeguardsClass>[]>(someNewDoc.refStringArray);
+        expectType<typegoose.mongoose.HydratedDocument<TypeguardsClass>[]>(someNewDoc.refStringArray);
       } else {
         expectType<typegoose.Ref<TypeguardsClass, string>[] | undefined>(someNewDoc.refStringArray);
       }
@@ -106,13 +106,13 @@ async function typeguards() {
       if (typegoose.isRefType(someNewDoc.refObjectId, typegoose.mongoose.Types.ObjectId)) {
         expectType<typegoose.mongoose.Types.ObjectId>(someNewDoc.refObjectId);
       } else {
-        expectType<typegoose.DocumentType<TypeguardsClass> | undefined>(someNewDoc.refObjectId);
+        expectType<typegoose.mongoose.HydratedDocument<TypeguardsClass> | undefined>(someNewDoc.refObjectId);
       }
 
       if (typegoose.isRefType(someNewDoc.refString, String)) {
         expectType<string>(someNewDoc.refString);
       } else {
-        expectType<typegoose.DocumentType<TypeguardsClass> | undefined>(someNewDoc.refString);
+        expectType<typegoose.mongoose.HydratedDocument<TypeguardsClass> | undefined>(someNewDoc.refString);
       }
     }
 
@@ -138,7 +138,7 @@ async function typeguards() {
   // top-level tests
   {
     if (typegoose.isDocument(someFoundDoc)) {
-      expectAssignable<typegoose.DocumentType<TypeguardsClass>>(someFoundDoc);
+      expectAssignable<typegoose.mongoose.HydratedDocument<TypeguardsClass>>(someFoundDoc);
     } else {
       // this type is currently wrong, typescript cannot remove the case because the input is not restricted enough
       expectAssignable<unknown>(someFoundDoc);
@@ -168,28 +168,15 @@ typeguards();
 async function testDocumentType() {
   const someNewDoc = new TestClassModel();
 
-  expectType<
-    typegoose.mongoose.Document<unknown, BeAnObject, TestClass> &
-      TestClass &
-      IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId }
-  >(someNewDoc);
+  expectType<typegoose.mongoose.HydratedDocument<TestClass, BeAnObject, BeAnObject>>(someNewDoc);
 
   const someCreatedDoc = await TestClassModel.create();
 
-  expectType<
-    (typegoose.mongoose.Document<unknown, BeAnObject, TestClass> &
-      TestClass &
-      IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId })[]
-  >(someCreatedDoc);
+  expectType<typegoose.mongoose.HydratedDocument<TestClass, BeAnObject, BeAnObject>[]>(someCreatedDoc);
 
   const someFoundDoc = await TestClassModel.findOne();
 
-  expectType<
-    | (typegoose.mongoose.Document<unknown, BeAnObject, TestClass> &
-        TestClass &
-        IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId })
-    | null
-  >(someFoundDoc);
+  expectType<typegoose.mongoose.HydratedDocument<TestClass, BeAnObject, BeAnObject> | null>(someFoundDoc);
 
   expectType<typegoose.mongoose.Types.ObjectId>(someNewDoc._id);
 }
@@ -209,29 +196,13 @@ async function gh732() {
 
   const doc = await SomeClassModel.create({ someoptionalProp: 'helloopt', somerequiredProp: 'helloreq' });
 
-  expectType<
-    typegoose.mongoose.Document<unknown, BeAnObject, SomeClass> &
-      SomeClass &
-      IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId }
-  >(doc);
+  expectType<typegoose.mongoose.HydratedDocument<SomeClass, BeAnObject, BeAnObject>>(doc);
 
   const toobj = doc.toObject();
   const tojson = doc.toJSON();
 
-  expectType<
-    typegoose.mongoose.Require_id<
-      typegoose.mongoose.Document<any, BeAnObject, SomeClass> &
-        SomeClass &
-        typegoose.types.IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId }
-    >
-  >(toobj);
-  expectType<
-    typegoose.mongoose.FlattenMaps<
-      typegoose.mongoose.Document<any, BeAnObject, SomeClass> &
-        SomeClass &
-        typegoose.types.IObjectWithTypegooseFunction & { _id: typegoose.mongoose.Types.ObjectId }
-    >
-  >(tojson);
+  expectType<SomeClass & { _id: typegoose.mongoose.Types.ObjectId } & Required<{ _id: typegoose.mongoose.Types.ObjectId }>>(toobj);
+  expectType<typegoose.mongoose.FlattenMaps<SomeClass & { _id: typegoose.mongoose.Types.ObjectId }>>(tojson);
 }
 
 gh732();

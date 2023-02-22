@@ -212,7 +212,7 @@ export function addModelToTypegoose<U extends AnyParamConstructor<any>, QueryHel
   cl: U,
   options?: { existingMongoose?: mongoose.Mongoose; existingConnection?: any; disableCaching?: boolean }
 ) {
-  const mongooseModel = options?.existingMongoose?.Model || options?.existingConnection?.base?.Model || mongoose.Model;
+  const mongooseModel = (options?.existingMongoose as any)?.Model || options?.existingConnection?.base?.Model || (mongoose as any).Model; // "as any", see https://github.com/Automattic/mongoose/pull/12935#issuecomment-1439893252
 
   assertion(model.prototype instanceof mongooseModel, new NotValidModelError(model, 'addModelToTypegoose.model'));
   assertionIsClass(cl);
