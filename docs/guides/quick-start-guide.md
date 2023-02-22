@@ -99,8 +99,8 @@ class User {
 Like `public: string[]` is in reflection only `Array`.  
 :::
 
-[Look here for what `!` means on a property](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#non-null-assertion-operator)  
-[Look here for what `?` means on a property](https://www.typescriptlang.org/docs/handbook/functions.html#optional-and-default-parameters)  
+[Look here for what `!` means on a property](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-)  
+[Look here for what `?` means on a property](https://www.typescriptlang.org/docs/handbook/2/functions.html#optional-parameters)  
 
 ## How to Start using typegoose
 
@@ -108,7 +108,7 @@ Like `public: string[]` is in reflection only `Array`.
 
 - TypeScript version `^4.9` (since 10.0) is recommended, though older ones may also work
 - NodeJS `^14.17.0`
-- Mongoose `~6.8.0`
+- Mongoose `~6.9.0`
 - A IDE that supports TypeScript linting is recommended to be used (VSCode is recommended)
 - This Guide expects you to know how Mongoose (or at least its models) works
 - `experimentalDecorators` and `emitDecoratorMetadata` must be enabled in `tsconfig.json`

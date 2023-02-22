@@ -10,14 +10,15 @@ import {
   mapModelOptionsToNaming,
   mergeMetadata,
   mergeSchemaOptions,
+  warnNotMatchingExisting,
 } from './internal/utils';
 
 /* istanbul ignore next */
 if (!isNullOrUndefined(process?.version) && !isNullOrUndefined(mongoose?.version)) {
   // for usage on client side
   /* istanbul ignore next */
-  if (semver.lt(mongoose?.version, '6.8.0')) {
-    throw new Error(`Please use mongoose 6.8.0 or higher (Current mongoose: ${mongoose.version}) [E001]`);
+  if (semver.lt(mongoose?.version, '6.9.0')) {
+    throw new Error(`Please use mongoose 6.9.0 or higher (Current mongoose: ${mongoose.version}) [E001]`);
   }
 
   /* istanbul ignore next */
@@ -427,17 +428,18 @@ export function getDiscriminatorModelForClass<U extends AnyParamConstructor<any>
     return models.get(name) as ReturnModelType<U, QueryHelpers>;
   }
 
+  if (mergedOptions.existingConnection && mergedOptions.existingConnection !== from.db) {
+    warnNotMatchingExisting(from.modelName, getName(cl), 'existingConnection');
+  }
+  if (mergedOptions.existingMongoose && mergedOptions.existingMongoose !== from.base) {
+    warnNotMatchingExisting(from.modelName, getName(cl), 'existingMongoose');
+  }
+
   const sch: mongoose.Schema<any> = buildSchema(cl, mergedOptions);
 
   const mergeHooks = mergedOptions.options?.enableMergeHooks ?? false;
   // Note: this option is not actually for "merging plugins", but if "true" it will *overwrite* all plugins with the base-schema's
   const mergePlugins = mergedOptions.options?.enableMergePlugins ?? false;
-
-  if (!mergeHooks && !mergePlugins) {
-    logger.debug('Manually applying global plugins');
-    // apply global plugins to the schema, see https://github.com/Automattic/mongoose/issues/12696
-    ((mergedOptions.existingMongoose ?? mongoose) as any)._applyPlugins(sch);
-  }
 
   const discriminatorKey = sch.get('discriminatorKey');
 

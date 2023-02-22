@@ -7,7 +7,7 @@ title: 'Error & Warning Details'
 
 ### Mongoose Version [E001]
 
-Error: `Please use mongoose 6.8.0 or higher (Current mongoose: x.x.x) [E001]`
+Error: `Please use mongoose 6.9.0 or higher (Current mongoose: x.x.x) [E001]`
 
 Error Class: `Error`
 
@@ -538,3 +538,14 @@ Type of "${name}.${key}" is not ${type}, but includes the following ${extra} opt
 
 Details:  
 The provided options (listed in the warning) do nothing with the provided `Type`
+
+### Property was defined differently on base and discriminator [W002]
+
+Warning:
+
+```txt
+Property "${property}" was defined on "${clName}", but is different from discriminator base "${fromName}", which is not supported! [W002]
+```
+
+Details:  
+The Property [`existingConnection`](../api/decorators/modelOptions.md#existingconnection) or [`existingMongoose`](../api/decorators/modelOptions.md#existingmongoose) were defined differently on the discriminator's base model and the discriminator itself, which is not supported.
