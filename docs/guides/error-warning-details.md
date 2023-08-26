@@ -158,6 +158,8 @@ class ErrorClass {
 }
 ```
 
+Note: This error could also trigger if `emitDecoratorMetadata` is not enabled in `tsconfig.json` and no `type` property is passed to `@prop`. See [requirements](../quick-start-guide.md).
+
 ### Not String Type Error (Enum) [E010]
 
 Error:
